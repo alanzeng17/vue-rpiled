@@ -43,7 +43,12 @@ export default new Router({
           component: SavedAnimations
         }
       ]
+    },
+    {
+      path: '*',
+      redirect: '/'
     }
+
     
   ]
 })
