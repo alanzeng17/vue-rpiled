@@ -6,8 +6,11 @@
       column
     >
       <v-flex align-center justify-center >
-        <verte display='widget' value='#fef8e2' picker='wheel' model='hex' :rgbSliders="true" :recentColors='null' :dragable='true' :enableAlpha='false' v-model="cVal" @click='submit("nye")'></verte>
-        <!-- <color-picker v-bind="color"  @input="onInput" style="position: relative; left: 32.2%;"></color-picker> -->
+        <v-layout align-center justify-center row fill-height>
+        <!-- <verte display='widget' value='#fef8e2' picker='wheel' model='hex' :rgbSliders="true" :recentColors='null' :dragable='true' :enableAlpha='false' v-model="cVal" @click='submit("nye")'></verte> -->
+        <!-- <color-picker v-bind="color"  @input="onInput" style="position: relative; left: 41.8%;"></color-picker> -->
+        <chrome v-model="colors" style=""></chrome>
+        </v-layout>
         <br></br>
       </v-flex>
       <v-flex v-if="advButton==false">
@@ -18,7 +21,7 @@
       </v-flex>
       <br>
       <v-flex v-if='advButton == true'>
-            <button @click='rangeToggle()'>Toggle Brightness Range</button>
+            <button @click='rangeToggle()'>Toggle Brightness Style</button>
             <v-layout align-center justify-center row fill-height v-if="rangeButton == true">
                 <v-flex shrink style="width: 6.5%;">   
                     <v-text-field
@@ -35,6 +38,7 @@
                     <v-range-slider
                         v-model="price"
                         style="width: 43%; position: relative; left: 28.5%; top: .7em;"
+                        label="Brightness"
                         :max="100"
                         :min="0"
                         :step="1"
@@ -57,18 +61,22 @@
 
             </v-layout >
             <v-layout align-center justify-center row fill-height v-else>
+                <v-flex>
+                    <v-slider 
+                    v-model="slider"
+                    style='position: relative; width: 38%; left:35%; top: -.2em;'
+                    label='Brightness'
+                     ></v-slider>
+                </v-flex>
                 <v-flex shrink style="width: 6.5%">   
                     <v-text-field
                         v-model="slider"
                         class="mt-0"
                         hide-details
                         single-line
-                        style="width: 75%; position: relative; left: 400%; top: -1em"
+                        style="width: 75%; position: relative; right: 350%; top: -1em"
                         type="number"
                     ></v-text-field>
-                </v-flex>
-                <v-flex>
-                    <v-slider v-model="slider" style='position: relative; width: 40%; left: 32%; top: -.2em;'></v-slider>
                 </v-flex>
             </v-layout>
             <v-layout align-center justify-center row fill-height>
@@ -96,12 +104,15 @@
 
 <script>
 import ColorPicker from '@radial-color-picker/vue-color-picker';
+import { Chrome } from 'vue-color'
+
 export default {
     components: {
-        ColorPicker
+        ColorPicker,
+        Chrome
     },
     data: () => ({
-        cVal: '#fef8e2',
+        cVal: '#111',//#fef8e2
         advButton: false,
         rangeButton: false,
         slider: 50,
@@ -118,9 +129,16 @@ export default {
         color: {
             hue: 50,
             saturation: 100,
-            luminosity: 50,
+            luminosity: 25,
             alpha: 1
         },
+        colors: {
+            hex: '#194d33',
+            hsl: { h: 150, s: 0.5, l: 0.2, a: 1 },
+            hsv: { h: 150, s: 0.66, v: 0.30, a: 1 },
+            rgba: { r: 25, g: 77, b: 51, a: 1 },
+            a: 1
+        }
     }),
     watch: {
         cVal: function() {
