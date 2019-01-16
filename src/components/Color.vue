@@ -161,8 +161,8 @@ export default {
             return Api().post('/uniformColor/setColor',
                 {
                     r:this.colors.rgba.r,
-                    b:this.colors.rgba.g,
-                    g:this.colors.rgba.b,
+                    g:this.colors.rgba.g,
+                    b:this.colors.rgba.b,
                     brightness:this.brightnessVal
                 }
             ).then(function (response) {
