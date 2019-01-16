@@ -64,7 +64,7 @@ export default {
       s[0] = s[0].toLowerCase();
       title = s.join('');
       // send the request
-      let response = await Api().post('animations/' + title)
+      let response = await Api().post('/animations/' + title)
       if (response.status == 200) {
         console.log(`Success! You sent a req for ${title}`);
       } else {
