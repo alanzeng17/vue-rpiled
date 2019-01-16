@@ -1,68 +1,63 @@
 <template>
-  <v-list two-line subheader>
-    <template v-for="item in items">
-      <v-list-tile
-        :key="item.title"
-        avatar
-        :to="item.route"
-      >
-        <v-list-tile-avatar>
-          <v-icon>{{ item.icon }}</v-icon>
-        </v-list-tile-avatar>
+  <div>
+    <v-dialog max-width="300" v-model="dialog">
+      <AnimationForm @cancelled="dialog=false" :template="clickedTemplate">
+        <component :is="formComponent"></component>
+      </AnimationForm>
+    </v-dialog>
+    <h3>Templates</h3>
+    <v-list two-line subheader>
+      <template v-for="item in templates">
+        <v-list-tile
+          :key="toDisplay(item.name)"
+          avatar
+          @click="handleClick(item)"
+        >
+          <v-list-tile-avatar>
+            <v-icon>{{ item.icon }}</v-icon>
+          </v-list-tile-avatar>
 
-        <v-list-tile-content>
-          <v-list-tile-title>{{ item.title }}</v-list-tile-title>
-          <v-list-tile-sub-title>{{ item.subtitle }}</v-list-tile-sub-title>
-        </v-list-tile-content>
+          <v-list-tile-content>
+            <v-list-tile-title>{{ toDisplay(item.name) }}</v-list-tile-title>
+            <v-list-tile-sub-title>{{ item.subtitle }}</v-list-tile-sub-title>
+          </v-list-tile-content>
 
-        <v-list-tile-action>
-          <v-btn fab dark small color="primary" @click.stop.prevent="sendDefault(item.title)">
-            <v-icon>mdi-lightbulb-on</v-icon>
-          </v-btn>
-        </v-list-tile-action>
-      </v-list-tile>
-      <v-divider/>
-    </template>
-  </v-list>
+          <v-list-tile-action>
+            <v-btn fab dark small color="primary" @click.stop.prevent="sendDefault(item.name)">
+              <v-icon>mdi-lightbulb-on</v-icon>
+            </v-btn>
+          </v-list-tile-action>
+        </v-list-tile>
+        <v-divider/>
+      </template>
+    </v-list>
+  </div>
 </template>
 
 <script>
 import AnimationAPI from '@/services/AnimationService'
 import Api from '@/services/Api'
+import AnimationForm from '@/components/animations/AnimationForm'
+import FormMap from '@/components/animations/forms/FormMap'
 
 export default {
+  name: 'Templates',
+  components: {
+    AnimationForm,
+  },
   data () {
     return {
-      items: [
-        { title: 'Rainbow Gradient', 
-          subtitle: 'Rainbow across the strip.', 
-          icon: 'gradient', 
-          route:'/testRoute'
-        },
-        { title: 'Rainbow Strip', 
-          subtitle: 'Rainbow with the entire strip.', 
-          icon: 'looks', 
-          route:'/tester'
-        },
-        { title: 'Strand Test', 
-          subtitle: 'Cycle of testing animations.', 
-          icon: 'mdi-test-tube',
-          route:'/'
-        },
-        { title: 'Theater Chase',
-          subtitle: 'Theater style lights.', 
-          icon: 'mdi-filmstrip' 
-        },
-      ]
+      dialog: false,
+      clickedTemplate: '',
+      formComponent: FormMap.forms['rainbowGradient'],
+      templates: [],
     }
   },
   
   methods: {
     async sendDefault(title) {
       // determine name of endpoint to hit
-      let s = title.split(' ');
-      s[0] = s[0].toLowerCase();
-      title = s.join('');
+      title = this.convertTitle(title);
       // send the request
       let response = await Api().post('animations/' + title)
       if (response.status == 200) {
@@ -70,8 +65,38 @@ export default {
       } else {
         console.log('Failure!');
       }
+    },
+
+    async loadTemplates() {
+      let temp = await Api().get('/animations/templates');
+      console.log(temp);
+      this.templates = temp.data.templates;
+    },
+
+    handleClick(item) {
+      if (item.name !== 'strandTest'){
+        this.dialog = true;
+        this.clickedTemplate = this.toDisplay(item.name);
+        this.formComponent = FormMap.forms[item.name]; 
+      }
+    },
+
+    convertTitle(title) {
+      let s = title.split(' ');
+      s[0] = s[0].toLowerCase();
+      return s.join('');
+    },
+
+    toDisplay(name) {
+      let result = name.replace(/([A-Z])/g, ' $1').replace(/^./, function(str){ return str.toUpperCase(); });
+      return result;
     }
-  }
+
+  },
+  
+  async mounted () {
+    await this.loadTemplates();
+  },
 }
 </script>
 

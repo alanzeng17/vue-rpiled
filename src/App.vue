@@ -19,7 +19,6 @@
     <v-navigation-drawer
     v-model="drawer"
     :mini-variant="mini"
-    absolute
     dark
     temporary
     app
