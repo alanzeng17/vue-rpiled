@@ -5,21 +5,26 @@
       wrap
       column
     >
-      <v-flex align-center justify-center >
+        <v-flex align-center justify-center >
         <v-layout align-center justify-center row fill-height>
         <!-- <verte display='widget' value='#fef8e2' picker='wheel' model='hex' :rgbSliders="true" :recentColors='null' :dragable='true' :enableAlpha='false' v-model="cVal" @click='submit("nye")'></verte> -->
         <!-- <color-picker v-bind="color"  @input="onInput" style="position: relative; left: 41.8%;"></color-picker> -->
         <chrome v-model="colors" style=""></chrome>
         </v-layout>
         <br></br>
-      </v-flex>
-      <v-flex v-if="advButton==false">
+        </v-flex>
+
+        <v-flex>
+            <v-btn @click='submit()' v-bind:style="{backgroundColor: cVal}">Submit</v-btn>
+        </v-flex>
+        <br>
+        <v-flex v-if="advButton==false">
           <button @click='advToggle()'> Show Advanced Options </button>
-      </v-flex>
-      <v-flex v-else>
+        </v-flex>
+        <v-flex v-else>
           <button @click='advToggle()'> Hide Advanced Options </button>
-      </v-flex>
-      <br>
+        </v-flex>
+        <br>
       <v-flex v-if='advButton == true'>
             <button @click='rangeToggle()'>Toggle Brightness Style</button>
             <v-layout align-center justify-center row fill-height v-if="rangeButton == true">
@@ -102,10 +107,7 @@
             </v-layout>
 
       </v-flex>
-    <br>
-    <v-flex>
-        <v-btn @click='submit()' v-bind:style="{backgroundColor: cVal}">Submit</v-btn>
-    </v-flex>
+
     </v-layout>
   </v-container>
 </template>
