@@ -158,15 +158,12 @@ export default {
     methods: {
         submit: function() { 
             console.log(this) //debug
-            var body = JSON.parse('{ "r": '+this.colors.rgba.r+', "g": '+this.colors.rgba.g+', "b": '+this.colors.rgba.b+', "brightness": '+this.brightnessVal+'}');
-            console.log(body)
-            //return Api().post('/uniformColor/setColor', body);
             return Api().post('/uniformColor/setColor',
                 {
-                    r:255,
-                    b:0,
-                    g:0,
-                    brightness:255
+                    r:this.colors.rgba.r,
+                    b:this.colors.rgba.g,
+                    g:this.colors.rgba.b,
+                    brightness:this.brightnessVal
                 }
             ).then(function (response) {
                 console.log(response);
