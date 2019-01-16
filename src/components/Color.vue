@@ -23,61 +23,68 @@
       <v-flex v-if='advButton == true'>
             <button @click='rangeToggle()'>Toggle Brightness Style</button>
             <v-layout align-center justify-center row fill-height v-if="rangeButton == true">
-                <v-flex shrink style="width: 6.5%;">   
+                <!-- *** Text Field Label Code *** -->
+                <!-- <v-flex shrink style="width: 7.5%;">   
                     <v-text-field
                         v-model="price[0]"
                         class="mt-0"
                         hide-details
                         single-line
                         type="number"
-                        style="position: relative; left:350%;"
+                        style="position: relative; left:170%;"
                     ></v-text-field>
-                </v-flex>
+                </v-flex> -->
     
                 <v-flex>
+                    <v-subheader style="position: relative; left: 13%">Brightness</v-subheader>
                     <v-range-slider
-                        v-model="price"
-                        style="width: 43%; position: relative; left: 28.5%; top: .7em;"
-                        label="Brightness"
+                        v-model="brightnessRange"
+                        style="width: 70%; position: relative; left: 16.5%; top: -.7em;"
+                        thumb-label="true"
+                        :color="colors.hex"
+                        thumb-color="#14A6BD"
+                        :thumb-size="32"
                         :max="100"
                         :min="0"
                         :step="1"
                     ></v-range-slider>
                 </v-flex>
-    
-                <v-flex
-                shrink
-                style="width: 9%;"
-                >
+
+                <!-- *** Text Field Label Code *** -->
+                <!-- <v-flex shrink style="width: 15%;">
                     <v-text-field
                         v-model="price[1]"
                         class="mt-0"
                         hide-details
                         single-line
                         type="number"
-                        style="position: relative; right:225%;"
+                        style="position: relative; right:75%;"
                     ></v-text-field>
-                </v-flex>
-
+                </v-flex> -->
             </v-layout >
             <v-layout align-center justify-center row fill-height v-else>
                 <v-flex>
                     <v-slider 
-                    v-model="slider"
-                    style='position: relative; width: 38%; left:35%; top: -.2em;'
-                    label='Brightness'
+                    style='position: relative; width: 85%; left:1%; top: -.2em;'
+                    thumb-label="true"
+                    :track-color="colors.hex"
+                    :color="colors.hex"
+                    thumb-color="#14A6BD"
+                    :thumb-size="32"
+                    label="Brightness"
+                    v-model="brightnessVal"
                      ></v-slider>
                 </v-flex>
-                <v-flex shrink style="width: 6.5%">   
+                <!-- <v-flex shrink style="width: 8.5%">   
                     <v-text-field
                         v-model="slider"
                         class="mt-0"
                         hide-details
                         single-line
-                        style="width: 75%; position: relative; right: 350%; top: -1em"
+                        style="width: 80%; position: relative; right: 200%; top: -1em"
                         type="number"
                     ></v-text-field>
-                </v-flex>
+                </v-flex> -->
             </v-layout>
             <v-layout align-center justify-center row fill-height>
                     <p style='top: 4px; position: relative;'>Empty Light Alternation</p>
@@ -96,7 +103,7 @@
       </v-flex>
     <br>
     <v-flex>
-        <v-btn @click='submit("call REST API here")' v-bind:style="{backgroundColor: cVal}">Submit</v-btn>
+        <v-btn @click='submit()' v-bind:style="{backgroundColor: cVal}">Submit</v-btn>
     </v-flex>
     </v-layout>
   </v-container>
@@ -105,6 +112,7 @@
 <script>
 import ColorPicker from '@radial-color-picker/vue-color-picker';
 import { Chrome } from 'vue-color'
+import Api from '@/services/Api'
 
 export default {
     components: {
@@ -116,7 +124,7 @@ export default {
         advButton: false,
         rangeButton: false,
         slider: 50,
-        price: [0, 100],
+        brightnessRange: [0, 100],
         dropdown_edit: [
         { text: '0' },
         { text: '1' },
@@ -138,7 +146,8 @@ export default {
             hsv: { h: 150, s: 0.66, v: 0.30, a: 1 },
             rgba: { r: 25, g: 77, b: 51, a: 1 },
             a: 1
-        }
+        },
+        brightnessVal: 100
     }),
     watch: {
         cVal: function() {
@@ -146,8 +155,12 @@ export default {
         }
     },
     methods: {
-        submit: function(message) {
-            alert(message)
+        submit: function() { 
+            console.log(this) //debug
+            var body = JSON.parse('{ "r": '+this.colors.rgba.r+', "g": '+this.colors.rgba.g+', "b": '+this.colors.rgba.b+', "brightness": '+this.brightnessVal+'}');
+            console.log(body)
+            return Api().post('/setColor', body);
+
         },
         change: function() {
             console.log(this.cVal)
