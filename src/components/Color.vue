@@ -44,7 +44,7 @@
                         :color="colors.hex"
                         thumb-color="#14A6BD"
                         :thumb-size="32"
-                        :max="100"
+                        :max="255"
                         :min="0"
                         :step="1"
                     ></v-range-slider>
@@ -71,6 +71,7 @@
                     :color="colors.hex"
                     thumb-color="#14A6BD"
                     :thumb-size="32"
+                    :max="255"
                     label="Brightness"
                     v-model="brightnessVal"
                      ></v-slider>
@@ -124,7 +125,7 @@ export default {
         advButton: false,
         rangeButton: false,
         slider: 50,
-        brightnessRange: [0, 100],
+        brightnessRange: [0, 255],
         dropdown_edit: [
         { text: '0' },
         { text: '1' },
@@ -147,7 +148,7 @@ export default {
             rgba: { r: 25, g: 77, b: 51, a: 1 },
             a: 1
         },
-        brightnessVal: 100
+        brightnessVal: 255
     }),
     watch: {
         cVal: function() {
@@ -159,7 +160,17 @@ export default {
             console.log(this) //debug
             var body = JSON.parse('{ "r": '+this.colors.rgba.r+', "g": '+this.colors.rgba.g+', "b": '+this.colors.rgba.b+', "brightness": '+this.brightnessVal+'}');
             console.log(body)
-            return Api().post('/setColor', body);
+            //return Api().post('/uniformColor/setColor', body);
+            return Api().post('/uniformColor/setColor',
+                {
+                    r:255,
+                    b:0,
+                    g:0,
+                    brightness:255
+                }
+            ).then(function (response) {
+                console.log(response);
+            });
 
         },
         change: function() {
