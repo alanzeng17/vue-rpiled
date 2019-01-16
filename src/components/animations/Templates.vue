@@ -59,7 +59,7 @@ export default {
       // determine name of endpoint to hit
       title = this.convertTitle(title);
       // send the request
-      let response = await Api().post('animations/' + title)
+      let response = await Api().post('/animations/' + title)
       if (response.status == 200) {
         console.log(`Success! You sent a req for ${title}`);
       } else {
