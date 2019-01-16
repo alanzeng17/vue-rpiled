@@ -96,7 +96,7 @@
       </v-flex>
     <br>
     <v-flex>
-        <v-btn @click='submit("hi")' v-bind:style="{backgroundColor: cVal}">Submit</v-btn>
+        <v-btn @click='submit("call REST API here")' v-bind:style="{backgroundColor: cVal}">Submit</v-btn>
     </v-flex>
     </v-layout>
   </v-container>
