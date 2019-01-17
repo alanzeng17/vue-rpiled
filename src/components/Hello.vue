@@ -1,31 +1,25 @@
 <template>
-  <v-container>
+  <v-parallax
+    dark
+    src="../assets/mainBG.jpg"
+  >
     <v-layout
-      text-xs-center
-      wrap
+      align-center
+      column
+      justify-center
     >
-      <v-flex xs12>
-        <v-img
-          :src="require('../assets/logo.svg')"
-          class="my-3"
-          contain
-          height="200"
-        ></v-img>
-      </v-flex>
-
-      <v-flex mb-4>
-        <h1 class="display-2 font-weight-bold mb-3">
-          Welcome to RPILED
-        </h1>
-        <p class="subheading font-weight-regular">
-          For help and collaboration on RPILED,
-          <br>please contact
-          <a href="https://www.youtube.com/watch?v=fRdvadcNPSg" target="_blank">313</a>
-        </p>
-      </v-flex>
-
+      <h1 class="display-2 font-weight-thin mb-3" id='main'>
+        <span style="color: #fea3aa">R</span>
+        <span style="color: #f8b88b">P</span>
+        <span style="color: #faf884">I</span>
+        <span style="color: #baed91">L</span>
+        <span style="color: #b2cefe">E</span>
+        <span style="color: #f2a2e8">D</span>
+      </h1>
+      <h4 class="subheading">Color your world today!</h4>
     </v-layout>
-  </v-container>
+  </v-parallax>
+
 </template>
 
 <script>
@@ -87,5 +81,6 @@
 </script>
 
 <style>
-
+#main {
+}
 </style>
