@@ -39,6 +39,8 @@
  
 <script>
 import AnimationFormStore from '../../stores/animationFormStore.js'
+import AnimationService from '@/services/AnimationService'
+import { convertTitle } from '@/components/animations/utils'
 
 export default {
   name: 'AnimationForm',
@@ -65,7 +67,18 @@ export default {
   methods: {
     save () {
       let merge = {...this.formData, ...AnimationFormStore.data};
+      merge.template = convertTitle(merge.template);
+      let payload = { animation: merge };
       console.log(merge);
+      AnimationService.saveAnimation(payload)
+        .then((response) => {
+          if (response.status == 200){
+            console.log('Successfully saved animation.');
+          } else {
+            console.log(response);
+          }
+        })
+      this.$emit('cancelled', true);
     },
     cancel () {
       this.$emit('cancelled', true);

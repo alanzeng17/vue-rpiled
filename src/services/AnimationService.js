@@ -1,7 +1,29 @@
 import Api from '@/services/Api'
 
 export default {
-  triggerRainbowStrip() {
-    return Api().post('animations/rainbowStrip')
-  }
+  triggerAnimation (name, payload) {
+    return Api().post(`/animations/${name}`, payload)
+  },
+
+  async retrieveTemplates () {
+    let templates = await Api().get('/animations/templates');
+    return templates.data.templates;
+  },
+  
+  async retrieveAnimations (favs) {
+    let animations;
+    if (favs) {
+      let params = {
+        onlyFav: true
+      }
+      animations = await Api().get('/animations/', params);
+    } else {
+      animations = await Api().get('/animations/');
+    }
+    return animations.data.animations;
+  },
+  
+  saveAnimation (payload) {
+    return Api().post('/animations/', payload);
+  },
 }

@@ -11,8 +11,9 @@
 </template>
 
 <script>
+import { toDisplay } from '@/components/animations/utils'
 import PersonalView from '@/components/animations/PersonalView'
-import Api from '@/services/Api'
+import AnimationService from '@/services/AnimationService'
 // import AnimationForm from '@/components/animations/AnimationForm'
 
 export default {
@@ -30,8 +31,7 @@ export default {
   },
   methods: {
     async loadAnimations() {
-      let anim = await Api().get('/animations/');
-      this.animations = anim.data.animations;
+      this.animations = await AnimationService.retrieveAnimations();
     }
   },
   async mounted () {

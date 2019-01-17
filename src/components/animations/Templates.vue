@@ -35,8 +35,7 @@
 </template>
 
 <script>
-import AnimationAPI from '@/services/AnimationService'
-import Api from '@/services/Api'
+import AnimationService from '@/services/AnimationService'
 import AnimationForm from '@/components/animations/AnimationForm'
 import FormMap from '@/components/animations/forms/FormMap'
 
@@ -59,18 +58,18 @@ export default {
       // determine name of endpoint to hit
       title = this.convertTitle(title);
       // send the request
-      let response = await Api().post('/animations/' + title)
-      if (response.status == 200) {
-        console.log(`Success! You sent a req for ${title}`);
-      } else {
-        console.log('Failure!');
-      }
+      AnimationService.triggerAnimation(title, {})
+        .then((response) => {
+          if (response.status == 200) {
+            console.log(`Success! You sent a req for ${title}`);
+          } else {
+            console.log('Failure!');
+          }
+        });
     },
 
     async loadTemplates() {
-      let temp = await Api().get('/animations/templates');
-      console.log(temp);
-      this.templates = temp.data.templates;
+      this.templates = await AnimationService.retrieveTemplates();
     },
 
     handleClick(item) {
