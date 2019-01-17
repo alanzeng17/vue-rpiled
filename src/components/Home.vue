@@ -1,7 +1,6 @@
 <template>
   <v-parallax
     dark
-    src="../assets/mainBG.jpg"
   >
     <v-layout
       align-center

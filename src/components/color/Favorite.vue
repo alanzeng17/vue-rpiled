@@ -13,7 +13,7 @@
               :key="n"
               xs4
             >
-              <v-card height="100px" flat tile :color='getRandomColor()'>
+              <v-card height="100px" flat tile :color='getRandomColor()' @click='submit(n)'>
                 <v-card-title
                 >{{color}}</v-card-title>
               </v-card>
@@ -55,7 +55,7 @@ export default {
   },
   methods: {
     setup: function() {
-      alert("Load Database Favorites here!")
+      console.log("Load Database Favorites here!")
       // Make REST call to Database, return an array of Color Objects
       // Use v-loop or v-key or whatever to dynamically render all colors
     },
@@ -66,6 +66,9 @@ export default {
         color += letters[Math.floor(Math.random() * 16)];
       }
       return color;
+    },
+    submit: function(index) {
+      alert('clicked!' + index)
     }
   }
 }
