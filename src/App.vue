@@ -91,7 +91,11 @@ const LINKS = [
   },
   { title: 'Single Color', 
     icon: 'color_lens',
-    route: '/color' 
+    route: '/color',
+    children: [
+      { title: 'Picker', route: '/color/picker', icon: 'color_lens' },
+      { title: 'Favorites', route: '/color/favorites', icon: 'mdi-heart'}
+    ] 
   },
   { title: 'Animations', 
     icon: 'cached',

@@ -9,23 +9,25 @@
         <v-layout align-center justify-center row fill-height>
         <!-- <verte display='widget' value='#fef8e2' picker='wheel' model='hex' :rgbSliders="true" :recentColors='null' :dragable='true' :enableAlpha='false' v-model="cVal" @click='submit("nye")'></verte> -->
         <!-- <color-picker v-bind="color"  @input="onInput" style="position: relative; left: 41.8%;"></color-picker> -->
-        <chrome v-model="colors" style=""></chrome>
+            <chrome :value="colors" @input="updateValue"></chrome>
         </v-layout>
-        <br></br>
+        <v-flex>
+    </v-flex> 
         </v-flex>
 
         <v-flex>
+            <v-btn v-bind:style="{backgroundColor: cVal}">Save</v-btn>
             <v-btn @click='submit()' v-bind:style="{backgroundColor: cVal}">Submit</v-btn>
         </v-flex>
         <br>
         <v-flex v-if="advButton==false">
-          <button @click='advToggle()'> Show Advanced Options </button>
+            <button @click='advToggle()'> Show Advanced Options </button>
         </v-flex>
         <v-flex v-else>
-          <button @click='advToggle()'> Hide Advanced Options </button>
+            <button @click='advToggle()'> Hide Advanced Options </button>
         </v-flex>
         <br>
-      <v-flex v-if='advButton == true'>
+        <v-flex v-if='advButton == true'>
             <button @click='rangeToggle()'>Toggle Brightness Style</button>
             <v-layout align-center justify-center row fill-height v-if="rangeButton == true">
                 <!-- *** Text Field Label Code *** -->
@@ -159,7 +161,7 @@ export default {
     },
     methods: {
         submit: function() { 
-            console.log(this) //debug
+            console.log(this.colors); //debug
             return Api().post('/uniformColor/setColor',
                 {
                     r:this.colors.rgba.r,
@@ -185,6 +187,13 @@ export default {
             this.color.hue = hue;
             this.cVal = hue;
         },
+        updateValue: function(newValue) {
+            this.red = newValue.rgba.r;
+            this.colors = newValue;
+        },
+        updateRedSlider: function(newValue) {
+            this.colors.rgba.r = newValue
+        }
     }
 }
 </script>
