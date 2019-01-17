@@ -11,7 +11,6 @@
 </template>
 
 <script>
-import { toDisplay } from '@/components/animations/utils'
 import PersonalView from '@/components/animations/PersonalView'
 import AnimationService from '@/services/AnimationService'
 // import AnimationForm from '@/components/animations/AnimationForm'
