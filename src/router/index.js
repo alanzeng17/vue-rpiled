@@ -1,8 +1,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Hello from '@/components/Hello'
+import Home from '@/components/Home'
 import Posts from '@/components/Posts'
-import Color from '@/components/Color'
+import Color from '@/components/color/Color'
+import FavoriteColors from '@/components/color/Favorite'
 import AnimationLayout from '@/components/animations/Layout'
 import AnimationTemplates from '@/components/animations/Templates'
 import SavedAnimations from '@/components/animations/Saved'
@@ -14,8 +15,8 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'Hello',
-      component: Hello
+      name: 'Home',
+      component: Home
     },
     {
       path: '/posts',
@@ -25,7 +26,19 @@ export default new Router({
     {
       path: '/color',
       name: 'Color',
-      component: Color
+      component: AnimationLayout,
+      children: [
+        {
+          path: 'picker',
+          name: 'Picker',
+          component: Color
+        },
+        {
+          path: 'favorites',
+          name: 'Favorites',
+          component: FavoriteColors
+        }
+      ]
     },
     {
       path: '/animation',
