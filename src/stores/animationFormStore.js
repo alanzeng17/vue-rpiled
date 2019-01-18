@@ -7,6 +7,10 @@ export default {
  
   fetchData() {
     // fetch logic
+  },
+
+  clear() {
+    this.data = {};
   }
  
 }

@@ -9,4 +9,7 @@ function toDisplay(name) {
   return result;
 }
 
-export { convertTitle, toDisplay }
+// fields common to all animations that must be removed when sending trigger requests
+const ANIMATION_FIELDS = ['id', 'name', 'template', 'favorite']
+
+export { convertTitle, toDisplay, ANIMATION_FIELDS }

@@ -9,6 +9,11 @@ export default {
     let templates = await Api().get('/animations/templates');
     return templates.data.templates;
   },
+
+  async retrieveTemplate (template) {
+    let templates = await Api().get('/animations/templates', { params: { name: template } })
+    return templates.data.template;
+  },
   
   async retrieveAnimations (favs) {
     let animations;
@@ -26,4 +31,13 @@ export default {
   saveAnimation (payload) {
     return Api().post('/animations/', payload);
   },
+  
+  updateAnimation (payload) {
+    return Api().put('/animations/', payload);
+  },
+
+  deleteAnimation (payload) {
+    let config = { data: payload }
+    return Api().delete('/animations/', config);
+  }
 }

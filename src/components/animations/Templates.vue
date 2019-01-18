@@ -1,8 +1,13 @@
 <template>
   <div>
     <v-dialog max-width="300" v-model="dialog">
-      <AnimationForm @cancelled="dialog=false" :template="clickedTemplate">
-        <component :is="formComponent"></component>
+      <AnimationForm 
+        @cancelled="dialog=false" 
+        :template="clickedTemplate"
+        :title="'Customize Animation'"
+        :dialog="dialog"
+      >
+        <component :is="formComponent" :dialog="dialog" :template="formTemplate"></component>
       </AnimationForm>
     </v-dialog>
     <h3>Templates</h3>
@@ -23,7 +28,7 @@
           </v-list-tile-content>
 
           <v-list-tile-action>
-            <v-btn fab dark small color="primary" @click.stop.prevent="sendDefault(item.name)">
+            <v-btn fab dark small color="primary" @click.stop="sendDefault(item.name)">
               <v-icon>mdi-lightbulb-on</v-icon>
             </v-btn>
           </v-list-tile-action>
@@ -37,7 +42,9 @@
 <script>
 import AnimationService from '@/services/AnimationService'
 import AnimationForm from '@/components/animations/AnimationForm'
+import AnimationFormStore from '@/stores/animationFormStore'
 import FormMap from '@/components/animations/forms/FormMap'
+import { convertTitle, toDisplay } from '@/components/animations/utils'
 
 export default {
   name: 'Templates',
@@ -48,12 +55,22 @@ export default {
     return {
       dialog: false,
       clickedTemplate: '',
-      formComponent: FormMap.forms['rainbowGradient'],
+      formTemplate: '',
+      formComponent: null,
       templates: [],
     }
   },
-  
+  watch: {
+    dialog (val) {
+      if (val === false) {
+        AnimationFormStore.clear();
+      }
+    }
+  },
   methods: {
+    convertTitle,
+    toDisplay,
+    
     async sendDefault(title) {
       // determine name of endpoint to hit
       title = this.convertTitle(title);
@@ -76,21 +93,10 @@ export default {
       if (item.name !== 'strandTest'){
         this.dialog = true;
         this.clickedTemplate = this.toDisplay(item.name);
+        this.formTemplate = item.name;
         this.formComponent = FormMap.forms[item.name]; 
       }
     },
-
-    convertTitle(title) {
-      let s = title.split(' ');
-      s[0] = s[0].toLowerCase();
-      return s.join('');
-    },
-
-    toDisplay(name) {
-      let result = name.replace(/([A-Z])/g, ' $1').replace(/^./, function(str){ return str.toUpperCase(); });
-      return result;
-    }
-
   },
   
   async mounted () {
