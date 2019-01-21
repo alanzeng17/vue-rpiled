@@ -7,6 +7,7 @@ import FavoriteColors from '@/components/color/Favorite'
 import AnimationLayout from '@/components/animations/Layout'
 import AnimationTemplates from '@/components/animations/Templates'
 import SavedAnimations from '@/components/animations/Saved'
+import FavoriteAnimations from '@/components/animations/Favorites'
 
 Vue.use(Router)
 
@@ -54,6 +55,11 @@ export default new Router({
           path: 'saved',
           name: 'Saved',
           component: SavedAnimations
+        },
+        {
+          path: 'favorites',
+          name: 'Favorites',
+          component: FavoriteAnimations
         }
       ]
     },

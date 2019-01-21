@@ -9,13 +9,42 @@
         <span class="font-weight-light">LED</span>
       </v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-flex xs5>
-        <v-text-field prepend-icon='search' :clearable=true placeholder='Search..' v-if="currentTab==='Animations'">
-        </v-text-field>
+      <v-flex xs6>
+        <v-autocomplete
+          v-if="currentTab==='Animations'"
+          v-model="search"
+          :items="searchItems"
+          color="white"
+          item-text="name"
+          placeholder="Search..."
+          prepend-icon="search"
+          return-object
+          :allow-overflow="false"
+        >
+          <template
+            slot="item"
+            slot-scope="data"
+          >
+            <v-list-tile-avatar v-if="data.item.icon">
+              <v-icon>{{data.item.icon}}</v-icon>
+            </v-list-tile-avatar>
+            <v-list-tile-content>
+              <v-list-tile-title v-html="toDisplay(data.item.name)"></v-list-tile-title>
+            </v-list-tile-content>
+            <v-list-tile-action>
+              <v-btn fab dark small color="primary" @click.stop="">
+                <v-icon>mdi-lightbulb-on</v-icon>
+              </v-btn>
+            </v-list-tile-action>
+            <v-list-tile-action v-if="data.item.favorite !== undefined">
+              <v-icon v-if="data.item.favorite" color="red" @click.stop="">mdi-heart</v-icon>
+              <v-icon v-else  @click.stop="">mdi-heart-outline</v-icon>
+            </v-list-tile-action>
+          </template>
+        </v-autocomplete>
       </v-flex>
     </v-toolbar>
     
-    <!-- <AppSidebar :visible="drawer"/> -->
     <v-navigation-drawer
     v-model="drawer"
     :mini-variant="mini"
@@ -78,12 +107,14 @@
     </v-navigation-drawer>
 
     <v-content>
-      <router-view/>
+      <router-view @search="updateSearch"/>
     </v-content>
   </v-app>
 </template>
 
 <script>
+import { toDisplay } from '@/components/animations/utils'
+
 const LINKS = [
   { title: 'Home', 
     icon: 'home', 
@@ -123,7 +154,17 @@ export default {
       items: LINKS,
       mini: false,
       right: null,
-      currentTab: 'Home'
+      currentTab: 'Home',
+      searchItems: null,
+      search: null,
+    }
+  },
+  methods: {
+    toDisplay, 
+    
+    updateSearch (animations) {
+      console.log(animations) // someValue
+      this.searchItems = animations;
     }
   }
 }

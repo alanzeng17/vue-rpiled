@@ -101,6 +101,7 @@ export default {
   
   async mounted () {
     await this.loadTemplates();
+    this.$emit('search', this.templates);
   },
 }
 </script>

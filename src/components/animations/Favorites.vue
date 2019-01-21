@@ -12,7 +12,7 @@
         <component :is="formComponent" :template="formTemplate" :animation="clickedAnimation" :dialog="dialog"></component>
       </AnimationForm>
     </v-dialog>
-    <h2>Saved</h2>
+    <h2>Favorites</h2>
     <!-- <PersonalView :items="animations"/> -->
     <v-list two-line>
       <template v-for="item in animations">
@@ -33,10 +33,10 @@
               <v-icon>mdi-lightbulb-on</v-icon>
             </v-btn>
           </v-list-tile-action>
-          <v-list-tile-action>
+          <!-- <v-list-tile-action>
             <v-icon v-if="item.favorite" color="red" @click.stop="handleFavorite(item)">mdi-heart</v-icon>
             <v-icon v-else  @click.stop="handleFavorite(item)">mdi-heart-outline</v-icon>
-          </v-list-tile-action>
+          </v-list-tile-action> -->
         </v-list-tile>
         <v-divider/>
       </template>
@@ -53,7 +53,7 @@ import AnimationFormStore from '@/stores/animationFormStore'
 import { toDisplay, ANIMATION_FIELDS } from '@/components/animations/utils'
 
 export default {
-  name: 'Saved',
+  name: 'Favorites',
   components: {
     PersonalView,
     AnimationForm,
@@ -84,7 +84,7 @@ export default {
     },
 
     async loadAnimations() {
-      this.animations = await AnimationService.retrieveAnimations();
+      this.animations = await AnimationService.retrieveAnimations(true);
     },
 
     handleClick (animation) {

@@ -21,7 +21,7 @@ export default {
       let params = {
         onlyFav: true
       }
-      animations = await Api().get('/animations/', params);
+      animations = await Api().get('/animations/', { params });
     } else {
       animations = await Api().get('/animations/');
     }
