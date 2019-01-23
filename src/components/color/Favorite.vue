@@ -69,6 +69,9 @@ export default {
     },
     submit: function(index) {
       alert('clicked!' + index)
+    },
+    async mounted: function() {
+      
     }
   }
 }
