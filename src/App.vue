@@ -125,7 +125,6 @@ const LINKS = [
     route: '/color',
     children: [
       { title: 'Picker', route: '/color/picker', icon: 'color_lens' },
-      { title: 'Saved', route: '/color/saved', icon: 'bookmark' },
       { title: 'Favorites', route: '/color/favorites', icon: 'mdi-heart'}
     ] 
   },

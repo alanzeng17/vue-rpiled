@@ -16,7 +16,7 @@
         </v-flex>
 
         <v-flex>
-            <v-btn @click='save()' v-bind:style="{backgroundColor: cVal}">Save</v-btn>
+            <v-btn v-bind:style="{backgroundColor: cVal}">Save</v-btn>
             <v-btn @click='submit()' v-bind:style="{backgroundColor: cVal}">Submit</v-btn>
         </v-flex>
         <br>
@@ -118,7 +118,6 @@
 import ColorPicker from '@radial-color-picker/vue-color-picker';
 import { Chrome } from 'vue-color'
 import Api from '@/services/Api'
-import ColorService from '@/services/ColorService'
 
 export default {
     components: {
@@ -163,7 +162,7 @@ export default {
     methods: {
         submit: function() { 
             console.log(this.colors); //debug
-            ColorService.triggerColor(
+            return Api().post('/uniformColor/setColor',
                 {
                     r:this.colors.rgba.r,
                     g:this.colors.rgba.g,
@@ -171,37 +170,18 @@ export default {
                     brightness:this.brightnessVal
                 }
             ).then(function (response) {
-              console.log(response);
-            }).catch(e => {
-              console.log(e);
+                console.log(response);
             });
 
-        },
-        save() {
-          ColorService.saveColor(
-              {
-                color:{
-                  r:this.colors.rgba.r,
-                  g:this.colors.rgba.g,
-                  b:this.colors.rgba.b,
-                  favorite:0
-                }
-
-              }
-            ).then(function (response) {
-              console.log(response);
-            }).catch(e => {
-              console.log(e);
-            });
         },
         change: function() {
-          console.log(this.cVal)
+            console.log(this.cVal)
         },
         rangeToggle: function() {
-          this.rangeButton = !this.rangeButton;
+            this.rangeButton = !this.rangeButton;
         },
         advToggle: function() {
-          this.advButton = !this.advButton;
+            this.advButton = !this.advButton;
         },
         onInput(hue) {
             this.color.hue = hue;

@@ -9,6 +9,11 @@ export default {
     let templates = await Api().get('/animations/templates');
     return templates.data.templates;
   },
+
+  async retrieveTemplate (template) {
+    let templates = await Api().get('/animations/templates', { params: { name: template } })
+    return templates.data.template;
+  },
   
   async retrieveAnimations (favs) {
     let animations;

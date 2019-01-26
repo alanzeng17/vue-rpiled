@@ -3,8 +3,7 @@ import Router from 'vue-router'
 import Home from '@/components/Home'
 import Posts from '@/components/Posts'
 import Color from '@/components/color/Color'
-import SavedColors from '@/components/color/SavedColors'
-import FavoriteColors from '@/components/color/FavoriteColors'
+import FavoriteColors from '@/components/color/Favorite'
 import AnimationLayout from '@/components/animations/Layout'
 import AnimationTemplates from '@/components/animations/Templates'
 import SavedAnimations from '@/components/animations/Saved'
@@ -36,16 +35,10 @@ export default new Router({
           component: Color
         },
         {
-          path: 'saved',
-          name: 'Saved',
-          component: SavedColors,
-        },
-        {
           path: 'favorites',
           name: 'Favorites',
-          component: FavoriteColors,
-        },
-
+          component: FavoriteColors
+        }
       ]
     },
     {
