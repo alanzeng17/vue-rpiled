@@ -1,11 +1,19 @@
 <template>
   <v-layout row justify-center>
       <v-card>
-        <v-card-title>
-          <span class="headline">Edit Color</span>
-        </v-card-title>
+          <v-flex v-if="favorite == 0">
+            <v-btn flat icon color="grey">
+              <v-icon>favorite</v-icon>
+            </v-btn>
+          </v-flex>
+          <v-flex v-else>
+            <v-btn flat icon color="red">
+              <v-icon>favorite</v-icon>
+            </v-btn>
+          </v-flex>
         <v-card-text>
           <v-container grid-list-md>
+            <h1>{{id}}</h1>
             <v-layout wrap>
               <v-flex xs12 sm6 md4>
                 <v-text-field label="Legal first name*" required></v-text-field>
@@ -34,17 +42,15 @@
                   required
                 ></v-select>
               </v-flex>
-              <v-flex xs12 sm6>
-                <v-autocomplete
-                  :items="['Skiing', 'Ice hockey', 'Soccer', 'Basketball', 'Hockey', 'Reading', 'Writing', 'Coding', 'Basejump']"
-                  label="Interests"
-                  multiple
-                ></v-autocomplete>
-              </v-flex>
             </v-layout>
           </v-container>
           <small>*indicates required field</small>
       </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn flat @click="clicked()">Close</v-btn>
+          <v-btn flat @click="clicked()">Save</v-btn>
+        </v-card-actions>
       </v-card>
   </v-layout>
 </template>
@@ -56,19 +62,31 @@ export default {
   name: 'Swatch',
   props: {
     hex: {
-      required: true,
+      required: false,
       type: String,
+    },
+    id: {
+      required: false,
+      type: Number
+    },
+    favorite: {
+      required: false,
+      type: Number
     }
   },
   components: {
+    id: -1,
+    favorite: 0,
   },
   data: () => ({
 
   }),
   methods: {
-
+    clicked() {
+    }
   },
-  async mounted() {
+  mounted() {
+    
   }
 }
 </script>
