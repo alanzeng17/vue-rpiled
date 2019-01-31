@@ -14,9 +14,21 @@
               :key="n"
               xs4
             >
-              <v-card height="100px" flat tile :color="String(colors[n])" @click='submit(n)'>
+              <v-card slot="activator" height="100px" flat tile :color="String(colors[n-1])" @click="dialog = true; clickedColor=String(colors[n-1])">
               </v-card>
             </v-flex>
+            <v-dialog v-model="dialog" max-width="600px">
+              <v-flex>
+                <color-form :hex="clickedColor"></color-form>
+                <v-layout row justify-center>
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn color="blue darken-1" flat large @click="dialog = false">Close</v-btn>
+                  <v-btn color="blue darken-1" flat large @click="dialog = false">Save</v-btn>
+                </v-card-actions>
+                </v-layout>
+              </v-flex>
+            </v-dialog>
           </v-layout>
         </v-container>
       </v-card>
@@ -39,6 +51,8 @@
 // Add form update
 // Edit button to delete
 import ColorService from '@/services/ColorService'
+import ColorForm from '@/components/color/ColorForm'
+
 export default {
   name: 'Swatch',
   props: {
@@ -48,10 +62,14 @@ export default {
     },
   },
   components: {
+    ColorForm
   },
   data: () => ({
       size: 'sm',
-      colors: ['#12345f']
+      colors: ['#12345f'],
+      dialog: false,
+      colorIdMap: new Map(),
+      clickedColor: '#ffffff'
   }),
   methods: {
      getRandomColor: function() {
@@ -84,13 +102,19 @@ export default {
     });
   
     // Convert data into easily used array
-    var newColors = []
+    var newColors = [];
+    this.colorIdMap = new Map();
     for (var i = 0; i < this.colors.length; i++) {
       var r = this.colors[i].r;
       var g = this.colors[i].g;
       var b = this.colors[i].b;
+      var id = this.colors[i].id;
       var hex = this.convertRGBtoHex(r, g, b);
-      newColors.push(hex);
+      if (!this.colorIdMap.has(hex)){
+        this.colorIdMap.set(hex, id); // map hex to id for future database calls
+        newColors.push(hex);
+      }
+
     }
     this.colors = newColors;
     this.asdf = this.colors[0]
