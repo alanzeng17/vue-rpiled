@@ -43,11 +43,11 @@
                 </v-flex> -->
     
                 <v-flex>
-                    <v-subheader style="position: relative; left: 13%">Brightness</v-subheader>
+                    <v-subheader style="width: 40%; position: relative; left: 11%">Brightness</v-subheader>
                     <v-range-slider
                         v-model="brightnessRange"
                         style="width: 70%; position: relative; left: 16.5%; top: -.7em;"
-                        thumb-label="true"
+                        :thumb-label="true"
                         :color="colors.hex"
                         thumb-color="#14A6BD"
                         :thumb-size="32"
@@ -72,8 +72,8 @@
             <v-layout align-center justify-center row fill-height v-else>
                 <v-flex>
                     <v-slider 
-                    style='position: relative; width: 85%; left:1%; top: -.2em;'
-                    thumb-label="true"
+                    style='position: relative; width: 85%; left:10%; top: -.2em;'
+                    :thumb-label="true"
                     :track-color="colors.hex"
                     :color="colors.hex"
                     thumb-color="#14A6BD"
