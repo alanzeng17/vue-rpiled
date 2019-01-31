@@ -8,12 +8,14 @@
       @input="updateStoreInput"
       :placeholder="`Default: ${this.defaults.time}`"      
     ></v-text-field>
+    <color-option></color-option>
   </div>
 </template>
 
 <script>
 import AnimationService from '@/services/AnimationService'
 import AnimationFormStore from '@/stores/animationFormStore.js'
+import ColorOption from '@/components/animations/ColorOption'
 
 const fields = ['time']
 
@@ -31,6 +33,9 @@ export default {
     animation: {
       type: Object
     }
+  },
+  components: {
+    ColorOption
   },
   data () {
     return {
