@@ -103,6 +103,7 @@ export default {
   },
   async mounted () {
     await this.loadAnimations()
+    console.log(this.animations);
     this.$emit('search', this.animations);
   },
 }

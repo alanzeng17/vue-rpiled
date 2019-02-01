@@ -8,7 +8,23 @@
       @input="updateStoreInput"
       :placeholder="`Default: ${this.defaults.time}`"      
     ></v-text-field>
-    <!-- <color-option></color-option> -->
+    <v-text-field
+      required
+      :rules="meteorRules"
+      label="Meteors"
+      v-model="data.meteors"
+      @input="updateStoreInput"
+      :placeholder="`Default: ${this.defaults.meteors}`"      
+    ></v-text-field>
+    <v-text-field
+      required
+      :rules="sizeRules"
+      label="Meteor Size"
+      v-model="data.size"
+      @input="updateStoreInput"
+      :placeholder="`Default: ${this.defaults.size}`"      
+    ></v-text-field>
+    <color-option @colorChange="updateColorAndStore" :maxColors="1" :minColors="1"></color-option>
   </div>
 </template>
 
@@ -17,10 +33,10 @@ import AnimationService from '@/services/AnimationService'
 import AnimationFormStore from '@/stores/animationFormStore.js'
 import ColorOption from '@/components/animations/ColorOption'
 
-const fields = ['time']
+const fields = ['time', 'color', 'meteors', 'size']
 
 export default {
-  name: 'TheaterChaseForm',
+  name: 'MeteorForm',
   props: {
     dialog: {
       required: true,
@@ -44,6 +60,14 @@ export default {
       timeRules: [
         v => !!v || 'Time is required',
         v => /^[0-9]+$/.test(v) || 'Integers only'
+      ],
+      meteorRules: [
+        v => !!v || 'Meteors is required',
+        v => /^[0-9]+$/.test(v) || 'Integers only'
+      ],
+      sizeRules: [
+        v => !!v || 'Size is required',
+        v => /^[0-9]+$/.test(v) || 'Integers only'
       ]
     }
   },
@@ -59,6 +83,13 @@ export default {
     updateStoreInput () {
       AnimationFormStore.data = this.data;
     },
+
+    updateColorAndStore (colors) {
+      this.data.color = parseInt(colors[0].slice(1), 16);
+      console.log(this.data);
+      this.updateStoreInput();
+    },
+
 
     async loadDefaults () {
       let template = await AnimationService.retrieveTemplate(this.template);

@@ -10,6 +10,11 @@ export default {
     return templates.data.templates;
   },
   
+  async retrieveTemplate (name) {
+    let templates = await Api().get('/animations/templates', { params: { name } });
+    return templates.data.template;
+  },
+  
   async retrieveAnimations (favs) {
     let animations;
     if (favs) {

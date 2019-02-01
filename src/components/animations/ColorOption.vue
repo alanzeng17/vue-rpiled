@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-layout align-content-center >
+    <v-layout v-if="variableColors" align-content-center >
       <v-flex>
         <v-btn small flat @click='addColor()'>+ Add Color</v-btn>
       </v-flex>
@@ -8,6 +8,7 @@
         <v-btn small flat @click='removeColor()'>- Remove Color</v-btn>
       </v-flex>
     </v-layout>
+    <h2 v-else>Choose Color:</h2>
     <v-layout align-content-center row wrap>
       <v-flex
         v-for="n in numButtons"
@@ -41,28 +42,38 @@ export default {
   name: 'ColorOption',
   props: {
     // Future ideas for props to make this component more modular
-    // minColors: {
-    //   required: false,
-    //   type: Number,
-    // },
-    // maxColors: {
-    //   required: false,
-    //   type: Number
-    // }
+    minColors: {
+      required: false,
+      type: Number,
+    },
+    maxColors: {
+      required: false,
+      type: Number
+    }
   },
   components: {
     Swatches
   },
   data: () => ({
     numButtons: 0,
-    maxColors: 9,
-    minColors: 0,
+    // maxColors: 9,
+    // minColors: 0,
     color: '#1CA085',
     colors: ['#5E35B1', '#3949AB', '#1E88E5', '#039BE5', '#00ACC1', '#00897B', '#66BB6A', '#689F38', '#E65100'],
     values: ['#5E35B1', '#3949AB', '#1E88E5', '#039BE5', '#00ACC1', '#00897B', '#66BB6A', '#689F38', '#E65100'],
     inputColors: [],
     popover: 'right'
   }),
+  computed: {
+    variableColors: function () {
+      return this.minColors !== this.maxColors;
+    }
+  },
+  watch: {
+    values (val) {
+      this.$emit('colorChange', this.values);
+    }
+  },
   methods: {
     getRandomColor: function() {
      
@@ -87,7 +98,7 @@ export default {
         alert('Max color limit reached!');
     },
     removeColor() {
-      if (this.numButtons > 0)
+      if (this.numButtons > this.minColors)
         this.numButtons -= 1;
       else
         alert('Cannot remove anymore colors!');
@@ -124,6 +135,10 @@ export default {
     }
     console.log(newColors);
     this.setupColors(newColors);
+    
+    for(let i = 0; i<this.minColors; i++){
+      this.addColor();
+    }
   }
 }
 </script>

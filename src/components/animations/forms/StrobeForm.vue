@@ -8,7 +8,15 @@
       @input="updateStoreInput"
       :placeholder="`Default: ${this.defaults.time}`"      
     ></v-text-field>
-    <!-- <color-option></color-option> -->
+    <v-text-field
+      required
+      :rules="brightnessRules"
+      label="Brightness"
+      v-model="data.brightness"
+      @input="updateStoreInput"
+      :placeholder="`Default: ${this.defaults.brightness}`"      
+    ></v-text-field>
+    <color-option @colorChange="updateColorAndStore" :maxColors="1" :minColors="1"></color-option>
   </div>
 </template>
 
@@ -17,10 +25,10 @@ import AnimationService from '@/services/AnimationService'
 import AnimationFormStore from '@/stores/animationFormStore.js'
 import ColorOption from '@/components/animations/ColorOption'
 
-const fields = ['time']
+const fields = ['time', 'brightness', 'color']
 
 export default {
-  name: 'TheaterChaseForm',
+  name: 'StrobeForm',
   props: {
     dialog: {
       required: true,
@@ -44,6 +52,10 @@ export default {
       timeRules: [
         v => !!v || 'Time is required',
         v => /^[0-9]+$/.test(v) || 'Integers only'
+      ],
+      brightnessRules: [
+        v => !!v || 'Brightness is required',
+        v => /([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])/.test(v) || 'Integers 0-255 only'
       ]
     }
   },
@@ -58,6 +70,12 @@ export default {
     // helper function to avoid direct mapping of component data to store
     updateStoreInput () {
       AnimationFormStore.data = this.data;
+    },
+    
+    updateColorAndStore (colors) {
+      this.data.color = parseInt(colors[0].slice(1), 16);
+      console.log(this.data);
+      this.updateStoreInput();
     },
 
     async loadDefaults () {
