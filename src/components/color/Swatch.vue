@@ -14,15 +14,12 @@
               :key="n"
               xs4
             >
-              <v-card slot="activator" height="100px" flat tile :color="String(colors[n-1])" @click="submit(n-1)">
+              <v-card slot="activator" height="7em" width="7em" flat tile :color="String(colors[n-1])" @click="submit(n-1)">
               </v-card>
             </v-flex>
             <v-dialog v-model="dialog" max-width="600px">
               <v-flex>
                 <color-form v-bind="currentProps()"></color-form>
-                <v-layout row justify-center>
-
-                </v-layout>
               </v-flex>
             </v-dialog>
           </v-layout>
@@ -89,15 +86,41 @@ export default {
     convertRGBtoHex(r, g, b) {
       return "#" + this.componentToHex(r) + this.componentToHex(g) + this.componentToHex(b);
     },
+    convertHexToRgb(hex) {
+    var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    return result ? {
+        r: parseInt(result[1], 16),
+        g: parseInt(result[2], 16),
+        b: parseInt(result[3], 16)
+    } : null;
+    },
     // Sets the props based on the most recently clicked index
     currentProps: function() {
-      if (this.colorMap.has(String(this.colors[this.clickedIndex])))
-        return { 
-          hex: String(this.colors[this.clickedIndex]),
-          id: this.colorMap.get(String(this.colors[this.clickedIndex]))[0],
-          favorite: this.colorMap.get(String(this.colors[this.clickedIndex]))[1],
+      console.log("here!");
+      if (this.colorMap.has(String(this.colors[this.clickedIndex]))){
+        var hexKey = String(this.colors[this.clickedIndex]);
+        var rgb = this.convertHexToRgb(hexKey);
+        console.log(rgb);
+        return {
+          dialog: true,
+          hex: hexKey,
+          id: this.colorMap.get(hexKey)[0],
+          favorite: this.colorMap.get(hexKey)[1],
+          r: rgb.r,
+          g: rgb.b,
+          b: rgb.g
         }
-      
+      } else {
+        return {
+          dialog: true,
+          hex: "#000000",
+          id: -1,
+          favorite: 0,
+          r: 0,
+          g: 0,
+          b: 0
+        }
+      }
     }
   },
   async mounted() {
@@ -124,14 +147,10 @@ export default {
       if (!this.colorMap.has(hex)){
         var tup = [id, fav]
         this.colorMap.set(hex, tup); // map hex to id for future database calls
-        //console.log(this.colorMap.get(hex));
         newColors.push(hex);
       }
-
     }
     this.colors = newColors;
-    //console.log(this.colors);
-    //console.log(typeof this.colors[0])
   }
 }
 </script>

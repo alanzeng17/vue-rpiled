@@ -168,7 +168,8 @@ export default {
                     r:this.colors.rgba.r,
                     g:this.colors.rgba.g,
                     b:this.colors.rgba.b,
-                    brightness:this.brightnessVal
+                    brightness:this.brightnessVal,
+                    hex: this.convertRGBtoHex(this.colors.rgba.r,this.colors.rgba.g,this.colors.rgba.b)
                 }
             ).then(function (response) {
               console.log(response);
@@ -184,7 +185,8 @@ export default {
                   r:this.colors.rgba.r,
                   g:this.colors.rgba.g,
                   b:this.colors.rgba.b,
-                  favorite:0
+                  favorite:0,
+                  hex: this.convertRGBtoHex(this.colors.rgba.r,this.colors.rgba.g,this.colors.rgba.b)
                 }
 
               }
@@ -211,9 +213,13 @@ export default {
             this.red = newValue.rgba.r;
             this.colors = newValue;
         },
-        updateRedSlider: function(newValue) {
-            this.colors.rgba.r = newValue
-        }
+        componentToHex(c) {
+          var hex = c.toString(16);
+          return hex.length == 1 ? "0" + hex : hex;
+        },
+        convertRGBtoHex(r, g, b) {
+          return "#" + this.componentToHex(r) + this.componentToHex(g) + this.componentToHex(b);
+        },
     }
 }
 </script>

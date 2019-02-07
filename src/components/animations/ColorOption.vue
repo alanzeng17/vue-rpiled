@@ -41,7 +41,6 @@ import ColorService from '@/services/ColorService'
 export default {
   name: 'ColorOption',
   props: {
-    // Future ideas for props to make this component more modular
     minColors: {
       required: false,
       type: Number,
@@ -59,7 +58,7 @@ export default {
     // maxColors: 9,
     // minColors: 0,
     color: '#1CA085',
-    colors: ['#5E35B1', '#3949AB', '#1E88E5', '#039BE5', '#00ACC1', '#00897B', '#66BB6A', '#689F38', '#E65100'],
+    colors: ['#5E35B1', '#3949AB', '#1E88E5', '#039BE5', '#00ACC1', '#00897B', '#66BB6A', '#689F38', '#E65100'], // defaults
     values: ['#5E35B1', '#3949AB', '#1E88E5', '#039BE5', '#00ACC1', '#00897B', '#66BB6A', '#689F38', '#E65100'],
     inputColors: [],
     popover: 'right'
