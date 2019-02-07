@@ -17,9 +17,10 @@
               <v-card slot="activator" height="7em" width="7em" flat tile :color="String(colors[n-1])" @click="submit(n-1)">
               </v-card>
             </v-flex>
-            <v-dialog v-model="dialog" max-width="600px">
+            <v-dialog v-model="dialog">
               <v-flex>
-                <color-form v-bind="currentProps()"></color-form>
+                <color-form @cancelled="dialog=false" v-bind="currentProps()">
+                </color-form>
               </v-flex>
             </v-dialog>
           </v-layout>
@@ -96,19 +97,18 @@ export default {
     },
     // Sets the props based on the most recently clicked index
     currentProps: function() {
-      console.log("here!");
       if (this.colorMap.has(String(this.colors[this.clickedIndex]))){
         var hexKey = String(this.colors[this.clickedIndex]);
         var rgb = this.convertHexToRgb(hexKey);
-        console.log(rgb);
         return {
           dialog: true,
           hex: hexKey,
           id: this.colorMap.get(hexKey)[0],
           favorite: this.colorMap.get(hexKey)[1],
           r: rgb.r,
-          g: rgb.b,
-          b: rgb.g
+          g: rgb.g,
+          b: rgb.b
+
         }
       } else {
         return {
@@ -121,36 +121,45 @@ export default {
           b: 0
         }
       }
+    },
+    async runStartup() {
+      // Get relevant colors from backend
+      await ColorService.retrieveColors(this.favorites)
+      .then(response => {
+        this.colors = response;
+        //console.log(response);
+      }).catch(e => {
+        console.log(e);
+      });
+
+      // Convert data into easily used array
+      var newColors = [];
+      this.colorMap = new Map();
+      for (var i = 0; i < this.colors.length; i++) {
+        var r = this.colors[i].r;
+        var g = this.colors[i].g;
+        var b = this.colors[i].b;
+        var id = this.colors[i].id;
+        var fav = this.colors[i].favorite ? 1 : 0;
+        var hex = this.convertRGBtoHex(r, g, b);
+        if (!this.colorMap.has(hex)){
+          var tup = [id, fav]
+          this.colorMap.set(hex, tup); // map hex to id for future database calls
+          newColors.push(hex);
+        }
+      }
+      this.colors = newColors;
     }
   },
   async mounted() {
-    // Get relevant colors from backend
-    console.log(this.favorites);
-    await ColorService.retrieveColors(this.favorites)
-    .then(response => {
-      this.colors = response;
-      console.log(response);
-    }).catch(e => {
-      console.log(e);
-    });
-
-    // Convert data into easily used array
-    var newColors = [];
-    this.colorMap = new Map();
-    for (var i = 0; i < this.colors.length; i++) {
-      var r = this.colors[i].r;
-      var g = this.colors[i].g;
-      var b = this.colors[i].b;
-      var id = this.colors[i].id;
-      var fav = this.colors[i].favorite ? 1 : 0;
-      var hex = this.convertRGBtoHex(r, g, b);
-      if (!this.colorMap.has(hex)){
-        var tup = [id, fav]
-        this.colorMap.set(hex, tup); // map hex to id for future database calls
-        newColors.push(hex);
+    this.runStartup();
+  },
+  watch: {
+    dialog: function(newValue, oldValue) {
+      if (newValue == false) {
+        this.runStartup();
       }
     }
-    this.colors = newColors;
   }
 }
 </script>

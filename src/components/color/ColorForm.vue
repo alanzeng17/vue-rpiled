@@ -1,6 +1,6 @@
 <template>
   <v-layout row justify-center>
-      <v-card>
+      <v-card width="22.5em">
           <v-flex v-if="favorite == 0" >
             <v-btn flat icon color="grey" @click="toggle()">
               <v-icon>favorite</v-icon>
@@ -50,10 +50,13 @@
             ></v-slider>
           </v-flex>
         <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="error" @click="clicked()">Delete</v-btn>
-          <v-btn color="blue-grey" >Test</v-btn>
-          <v-btn color="success" @click="save()">Save</v-btn>
+          <v-layout justify-space-between style="margin-left:1em; margin-right: 1em;">
+            <v-btn color="error" @click="clicked()">Delete</v-btn>
+            <v-btn fab dark small color="primary" @click="clicked()">
+              <v-icon>mdi-lightbulb-on</v-icon>
+            </v-btn>
+            <v-btn color="success" @click="save()">Save</v-btn>
+          </v-layout>
         </v-card-actions>
       </v-card>
   </v-layout>
@@ -101,8 +104,6 @@ export default {
     }
   },
   components: {
-    id: -1,
-    favorite: 0,
   },
   data: () => ({
     redVal: 0,
@@ -115,15 +116,41 @@ export default {
   }),
   methods: {
     clicked() {
+      console.log('deleting: ')
+      console.log(this.getCurrentColor());
+      ColorService.deleteColor(this.getCurrentColor());
+      this.$emit('cancelled', false);
     },
     toggle() {
-      if (this.favorite == 0)
-        this.favorite = 1;
-      else if (this.favorite == 1)
-        this.favorite = 0;
+      if (this.favVal == 0)
+        this.favVal = 1;
+      else if (this.favVal == 1)
+        this.favVal = 0;
+    },
+    getCurrentColor() {
+      var colorJSON = {
+        color: {
+          id: this.id,
+          r: this.redVal,
+          g: this.greenVal,
+          b: this.blueVal,
+          favorite: this.favVal,
+          hex: this.hexVal
+        }
+      }
+      return colorJSON;
     },
     save() {
       // update PUT call here
+      ColorService.updateColor(this.getCurrentColor());
+      this.$emit('cancelled', false);
+    },
+    test() {
+
+    },
+    deleteC() {
+      ColorService.deleteColor(getCurrentColor());
+      this.$emit('cancelled', false);
     },
     componentToHex(c) {
       var hex = c.toString(16);
@@ -135,35 +162,37 @@ export default {
     //hexToRGB
   },
   watch: {
+    id: function(newValue, oldValue) {
+      this.idVal = newValue;
+    },
+    favorite: function(newValue, oldValue) {
+      this.favVal = newValue;
+    },
     r: function(newValue, oldValue) {
       this.redVal = newValue;
-      this.hexVal = this.convertRGBtoHex(this.redVal, this.blueVal, this.greenVal)
+      this.hexVal = this.convertRGBtoHex(this.redVal, this.greenVal, this.blueVal)
     },
     g: function(newValue, oldValue) {
       this.greenVal = newValue;
-      this.hexVal = this.convertRGBtoHex(this.redVal, this.blueVal, this.greenVal)
+      this.hexVal = this.convertRGBtoHex(this.redVal, this.greenVal, this.blueVal)
     },
     b: function(newValue, oldValue) {
       this.blueVal = newValue;
-      this.hexVal = this.convertRGBtoHex(this.redVal, this.blueVal, this.greenVal)
+      this.hexVal = this.convertRGBtoHex(this.redVal, this.greenVal, this.blueVal)
     },
     redVal: function(newValue, oldValue) {
-      this.hexVal = this.convertRGBtoHex(this.redVal, this.blueVal, this.greenVal)
+      this.hexVal = this.convertRGBtoHex(this.redVal, this.greenVal, this.blueVal)
     },
     greenVal: function(newValue, oldValue) {
-      this.hexVal = this.convertRGBtoHex(this.redVal, this.blueVal, this.greenVal)
+      this.hexVal = this.convertRGBtoHex(this.redVal, this.greenVal, this.blueVal)
     },
     blueVal: function(newValue, oldValue) {
-      this.hexVal = this.convertRGBtoHex(this.redVal, this.blueVal, this.greenVal)
+      this.hexVal = this.convertRGBtoHex(this.redVal, this.greenVal, this.blueVal)
     },
     dialog: function(newValue, oldValue) {
-      if (this.toSave == false) {
-        this.redVal = this.r;
-        this.greenVal = this.g;
-        this.blueVal = this.b;
-      } else {
-        this.toSave = false;
-      }
+      this.redVal = this.r;
+      this.greenVal = this.g;
+      this.blueVal = this.b;
     }
   },
 
