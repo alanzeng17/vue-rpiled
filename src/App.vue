@@ -141,6 +141,11 @@ const LINKS = [
   { title: 'Patterns', 
     icon: 'texture', 
     route: '/patterns'
+  },
+  {
+    title: 'Music',
+    icon: 'cached',
+    route: '/music'
   }
 ]
 

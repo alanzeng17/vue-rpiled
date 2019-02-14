@@ -9,6 +9,7 @@ import AnimationLayout from '@/components/animations/Layout'
 import AnimationTemplates from '@/components/animations/Templates'
 import SavedAnimations from '@/components/animations/Saved'
 import FavoriteAnimations from '@/components/animations/Favorites'
+import MusicSync from '@/components/music/MusicSync'
 
 Vue.use(Router)
 
@@ -69,6 +70,15 @@ export default new Router({
           component: FavoriteAnimations
         }
       ]
+    },
+    {
+      path: '/music',
+      name: 'Music',
+      component: MusicSync
+    },
+    {
+      path: '/music/*',
+      redirect: '/music'
     },
     {
       path: '*',
