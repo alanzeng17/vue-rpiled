@@ -116,9 +116,9 @@ export default {
   }),
   methods: {
     clicked() {
-      console.log('deleting: ')
+      console.log('triggering: ')
       console.log(this.getCurrentColor());
-      ColorService.deleteColor(this.getCurrentColor());
+      ColorService.triggerColor(this.getCurrentColor());
       this.$emit('cancelled', false);
     },
     toggle() {
